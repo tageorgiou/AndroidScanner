@@ -172,6 +172,9 @@ Java_org_libdmtx_DMTXImage_getTags(JNIEnv *aEnv, jobject aImage,
    if(lDecode == NULL)
       return NULL;
 
+   //set edge max to 100
+   dmtxDecodeSetProp(lDecode, DmtxPropEdgeMax, 100);
+
    /* Allocate temporary Tag array */
    lTags = (jobject *)malloc(aTagCount * sizeof(jobject));
    if(lTags == NULL)

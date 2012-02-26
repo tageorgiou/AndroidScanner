@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class AndroidScannerActivity extends Activity {
@@ -51,18 +52,25 @@ public class AndroidScannerActivity extends Activity {
     	int height = 800;
     	System.out.println(img.getWidth());
     	System.out.println(img.getHeight());
-    	int midx = img.getWidth() / 2;
-    	int midy = img.getHeight() / 2;
-    	Bitmap cropImg = Bitmap.createBitmap(img, midx - width / 2, midy - height/2, width, height);
+    	Bitmap scaledBitmap = Bitmap.createScaledBitmap(img, (int) (img.getWidth() * 0.5), (int)(img.getHeight() * 0.5), true);
+    	int midx = scaledBitmap.getWidth() / 2;
+    	int midy = scaledBitmap.getHeight() / 2;
+    	Bitmap cropImg = Bitmap.createBitmap(scaledBitmap, midx - width / 2, midy - height/2, width, height);
     	int size = cropImg.getHeight() * cropImg.getWidth();
     	IntBuffer buff = IntBuffer.allocate(size);
     	cropImg.copyPixelsToBuffer(buff);
     	DMTXImage dmtxImage = new DMTXImage(cropImg.getWidth(), cropImg.getHeight(), buff.array());
-    	DMTXTag[] tags = dmtxImage.getTags(4, 20000);
+    	DMTXTag[] tags = dmtxImage.getTags(5, 10000);
     	System.out.println(tags.length);
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(tags.length + " tags found\n");
     	for (DMTXTag tag: tags) {
+    		sb.append(tag.id + "\n");
     		System.out.println(tag.id);
     	}
+    	String text = sb.toString();
+    	EditText textView = (EditText)findViewById(R.id.textView);
+    	textView.setText(text);
     }
     
     @Override
