@@ -1,0 +1,4 @@
+An android application that can read datamatrix barcoded test tubes
+
+jni/ contains libdmtx git version a3e539a3e1c1076c7b96ad306f0883f9b363eb60
+(0.7.5) and a modified version of the java dmtx wrapper
